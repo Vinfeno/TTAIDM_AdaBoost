@@ -1,9 +1,0 @@
-\babel@toc {ngerman}{}\relax 
-\contentsline {section}{\numberline {1}Einleitung}{1}{section.1}%
-\contentsline {section}{\numberline {2}Grundlagen des Boosting}{2}{section.2}%
-\contentsline {section}{\numberline {3}Der AdaBoost Algorithmus}{3}{section.3}%
-\contentsline {section}{\numberline {4}Praktische Anwendung und Beispiele}{8}{section.4}%
-\contentsline {section}{\numberline {5}Vor- und Nachteile von AdaBoost}{9}{section.5}%
-\contentsline {section}{\numberline {6}Erweiterungen und Variationen von AdaBoost}{9}{section.6}%
-\contentsline {section}{\numberline {7}Schlusswort}{10}{section.7}%
-\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
