@@ -1,5 +1,7 @@
 .vscode/
 Sources/
+Vorlage/
+beamer_template/
 *.log
 *.bbl
 *.aux
