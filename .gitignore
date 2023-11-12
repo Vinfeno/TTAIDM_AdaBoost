@@ -2,6 +2,7 @@
 Sources/
 Vorlage/
 beamer_template/
+Sources/
 *.log
 *.bbl
 *.aux
