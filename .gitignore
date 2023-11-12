@@ -1,0 +1,17 @@
+.vscode/
+Sources/
+*.log
+*.bbl
+*.aux
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+*.auxlock
+*.nav
+*.snm
+*.vrb
+*.sty
+*.zip

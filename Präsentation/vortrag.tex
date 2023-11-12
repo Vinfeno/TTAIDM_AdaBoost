@@ -1,0 +1,346 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Presentation template for Scientific Computing seminar
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[hyperref={bookmarks=false},11pt,dvipsnames]{beamer}
+\usepackage{tabularx}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{hyperref}
+\setbeamercolor{url}{fg=red}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Course metadata
+\newcommand{\coursename}{Bachelor-Seminar \glqq{}Top 10 Algorithms in Data Mining\grqq{}}
+\newcommand{\coursenamefootline}{Bachelor-Seminar \glqq{}Top 10 Algorithms in Data Mining\grqq{}}
+
+% In seminars, the presenter of a talk is typically different from the lecturer responsible for the course.
+% The following commands allow to have this distinction. The lecturer's name is printed in the banner on the 
+% titlepage (if activated) and the presenter's name is passed into the \author{} command.
+\newcommand{\presentername}{Marius Graf}
+\newcommand{\presenternameshort}{M. Graf}
+\newcommand{\lecturername}{Dr.~Marcel Schweitzer}
+
+\author[\presenternameshort]{\presentername}
+\institute{Bergische Universität Wuppertal}
+\def\englishlanguage{0}             % set to 1 to switch from German to English
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Switches for title page design
+\def\printbanner{1}                 % set to 1 to print title page banner
+\def\printauthor{1}                 % set to 1 if author name should also be printed outside of title banner
+\def\printdate{1}                   % set to 1 in order to print date
+\def\printinstitute{0} 		          % set to 1 in order to print institute
+\def\printcoursename{1}		          % set to 1 to print course name above title and in footline
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Other layout switches
+\def\coveredtransparent{1}          % set to 1 to make covered items completely invisible
+\def\printnavigationsymbols{0}      % set to 1 to activate navigation symbols
+\def\printtocatbeginofsection{1}    % print outline slide (with highlighted current section) at beginning of each section
+\def\printtocatbeginofsubsection{0} % print outline slide (with highlighted current subsection) at beginning of each subsection
+\def\printlion{1}                   % set to 0 to suppress small "Uni-Loewe" icon in top right corner
+\def\printpagenumbers{1}            % set to 0 to suppress page numbers in foot line
+\def\longtitle{0}                   % Sometimes, very long titles can break the title page layout. In that case, setting this to 1 might improve things
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{slidestyle} 
+
+\title{AdaBoost}
+\date{06.12.2023}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% title slide
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% outline slide (without frame number in foot line)
+\let\rememberpagenumberswitch\printpagenumbers
+\def\printpagenumbers{0}
+
+\begin{frame}[t,noframenumbering]{\ifthenelse{\englishlanguage=1}{Outline}{Inhalt}}
+	\tableofcontents
+\end{frame}
+\let\printpagenumbers\rememberpagenumberswitch
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Content starts here
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Einleitung}
+
+\begin{frame}[t]{Was ist Data Mining?}
+	\includegraphics[width=0.5\textwidth]{figures/datamining.png}
+	\begin{itemize}
+		\item <1-> Analysiert große Datenmengen, um Muster und Zusammenhänge zu erkennen.
+		\item <2-> Nutzt dabei Methoden aus der Statistik, dem Machine Learning und Datenbanktechnologien.
+		\item <3-> Spielt eine zentrale Rolle in der Forschung und Industrie,
+		      um Erkenntnisse zu gewinnen und
+		      Entscheidungen zu unterstützen.
+	\end{itemize}
+\end{frame}
+\begin{frame}[t]{Was sind Ensemble-Methoden?}
+	\begin{itemize}
+		\item <1-> \textbf{Ensemble-Verfahren:} Kombinieren mehrere Modelle für präzisere Vorhersagen
+		\item <2-> \textbf{Fehlerminimierung:} Reduzieren von systematische Fehlern in Modellprognosen
+		\item <3-> \textbf{Arten von Ensemble-Methoden:}
+		      \begin{itemize}
+			      \item Bagging
+			      \item Stacking
+			      \item Boosting
+		      \end{itemize}
+		\item <4-> \textbf{AdaBoost gehört zu den Boosting-Verfahren}
+	\end{itemize}
+\end{frame}
+
+\section{Grundlagen des Boosting}
+\begin{frame}[t]{Die Grundidee}
+	\begin{itemize}
+		\item <2-> Boosting ist eine Ensemble-Methode, die schwache Lerner kombiniert,
+		      um ein starkes Gesamtmodell zu bilden.
+		\item <3-> Ein schwacher Lerner ist ein Modell, das nur minimal besser als Zufall
+		      vorhersagt, indem es schwache Zusammenhänge in den Daten erkennt.
+		\item <4-> Durch iterative Anpassung der Gewichtung von Trainingsdaten korrigiert jedes
+		      neue Modell die Fehler seiner Vorgänger.
+		\item <5-> Das Verfahren zielt darauf ab, den Bias zu verringern und die Vorhersagegenauigkeit
+		      für schwer klassifizierbare Beispiele zu erhöhen.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Veranschaulichung}
+	\centering
+	\includegraphics[width=0.8\textwidth]{../Ausarbeitung/figures/Boosting_Graph.png}
+\end{frame}
+\begin{frame}[t]{Beispiel}{Vorhersage von Hauspreisen}
+	\begin{itemize}
+		\item <1-> Wir möchten ein Modell entwickeln, das den Preis von
+		      Häusern basierend auf verschiedenen Merkmalen wie Größe, Lage, Anzahl der
+		      Zimmer und Baujahr vorhersagt.
+	\end{itemize}
+	\begin{table}
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\input{../Ausarbeitung/module/boosting/BoostingTabelle1.tex}
+		}
+		\caption{Beispielhafte Daten für Hauspreise basierend auf Größe und Lage}
+	\end{table}
+
+
+\end{frame}
+\subsection*{Beispiel}
+\begin{frame}[t]{Beispiel}{Vorhersage von Hauspreisen}
+	\begin{itemize}
+		\item <1-> Zunächst wählen wir ein sehr einfaches Modell (schwacher Lerner),
+		      das den Preis nur anhand der Größe des Hauses vorhersagt.
+		\item <2-> In Wirklichkeit variieren die Hauspreise jedoch nicht nur aufgrund
+		      ihrer Größe, sondern auch aufgrund anderer Faktoren.
+		      Gegend.
+		\item <3-> Da unser Modell nur die Größe berücksichtigt und alle anderen Faktoren ignoriert,
+		      wird es systematisch den Preis von Häusern in begehrten Lagen unterschätzen und den Preis
+		      von Häusern in weniger beliebten Gegenden überschätzen. Dieser systematische Fehler in den
+		      Vorhersagen ist der \textbf{Bias}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Beispiel}{Vorhersage von Hauspreisen}
+	\begin{itemize}
+		\item Beim Boosting wird das Gewicht von Datenpunkten iterativ so angepasst, dass sich
+		      nachfolgende Modelle verstärkt auf zuvor schlecht vorhergesagte Fälle konzentrieren.
+	\end{itemize}
+	\begin{table}
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\input{../Ausarbeitung/module/boosting/BoostingTabelle2.tex}
+		}
+		\caption{Beispielhafte Daten für Hauspreise und wie Boosting den Bias in mehreren Iterationen reduziert}
+	\end{table}
+\end{frame}
+
+\section{Der AdaBoost Algorithmus}
+\begin{frame}[t]{Einführung}
+	\begin{itemize}
+		\item <1-> \glqq Adaptive Boosting\grqq
+		\item <2-> AdaBoost, entwickelt in den 1990ern von Freund und Schapire, ist ein
+		      einflussreiches Verfahren für binäre Klassifikation im maschinellen Lernen.
+		\item <3-> Es nutzt eine iterative Boosting-Methode, die die Gewichtung falsch
+		      klassifizierter Datenpunkte erhöht, um die Vorhersagegenauigkeit zu verbessern.
+		\item <4-> AdaBoosts spezielle adaptive Fehlerkorrektur hebt es von anderen Boosting-Methoden ab und hat zu
+		      vielen Weiterentwicklungen geführt.
+	\end{itemize}\cite{WuKumar2009}
+\end{frame}
+
+\begin{frame}{Vereinfachte Sicht auf den Algorithmus}
+	\begin{algorithm}[H]
+		\DontPrintSemicolon
+		\SetKwInput{KwData}{Daten}
+		\SetKwInput{KwResult}{Ergebnis}
+		\BlankLine
+		\KwIn{Datensatz, Lernalgorithmus}
+		Initialisiere Gewichte des Datensatzes\;
+		\For{\(t = 1\) \KwTo \(T\)}{
+			Trainiere schwache Lerner mit gewichtetem Datensatz\;
+			Bestimme Fehler der Lerner\;
+			Wähle schwachen Lerner mit geringstem Fehler\;
+			Berechne Lernkoeffizienten\;
+			Gewichte Datenpunkte neu\;
+		}
+		\KwOut{\text{Starker Lerner (Ensemble)}}
+	\end{algorithm}
+\end{frame}
+
+\begin{frame}[t]{Notation}
+	\input{../Ausarbeitung/module/AdaBoost/Notation.tex}
+\end{frame}
+
+\begin{frame}[t]{Initialisierung der Gewichte}
+	\begin{itemize}
+		\item <1-> Zu beginn sind die Gewichte gleich verteilt \input{../Ausarbeitung/module/AdaBoost/formeln/Init1.tex}
+		\item <2-> Die Summe der Gewichte ist stets 1 \input{../Ausarbeitung/module/AdaBoost/formeln/Init2.tex}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Training der schwachen Lerner}
+	\begin{itemize}
+		\item <1-> \input{../Ausarbeitung/module/AdaBoost/formeln/Training1.tex}
+		\item <2-> \input{../Ausarbeitung/module/AdaBoost/formeln/Training2.tex} wähle daher den Lerner mit dem geringsten Fehler.
+		\item <3-> \input{../Ausarbeitung/module/AdaBoost/formeln/Indikator.tex}
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]{Berechnung des Lernkoeffizienten}
+	\begin{itemize}
+		\item <1-> Zu dem ausgewählten Lerner $h_t$ wird nun ein \textbf{Lernkoeffizient} $\alpha_t$ berechnet:
+		      \input{../Ausarbeitung/module/AdaBoost/formeln/Lernkoeffizient.tex}
+		\item <2-> Dieser gibt an, wie stark die Vorhersage dieses Lerners im späteren Ensemble gewichtet wird.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Aktualisierung der Gewichte}
+	\begin{itemize}
+		\item <1-> Die neuen Gewichte der Daten für den nächsten Durchlauf werden berechnet durch
+		      \input{../Ausarbeitung/module/AdaBoost/formeln/Aktualisierung.tex}
+		\item <2-> Die neuen Gewichte müssen anschließend normalisiert werden, damit ihre Summe wieder 1 ist:
+		      \input{../Ausarbeitung/module/AdaBoost/formeln/Normalisierung.tex}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Das Ergebnis des Algorithmus}
+	\input{../Ausarbeitung/module/AdaBoost/formeln/Ergebnis.tex}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Der vollständige Algorithmus}
+	\begin{scriptsize}
+		\input{../Ausarbeitung/module/AdaBoost/formeln/Algo1.tex}
+		\input{../Ausarbeitung/module/AdaBoost/formeln/Algo2.tex}
+	\end{scriptsize}
+\end{frame}
+
+\begin{frame}{Beispiel und Illustration}{Das XOR-Problem}
+	\begin{scriptsize}
+		\input{../Ausarbeitung/module/AdaBoost/formeln/XOR1.tex}
+		\input{../Ausarbeitung/module/AdaBoost/formeln/XOR2.tex}
+	\end{scriptsize}
+\end{frame}
+
+\begin{frame}{Das XOR-Problem}
+	\centering
+	\includegraphics[width=0.5\textwidth]{../Ausarbeitung/figures/XOR-Problem.png}
+\end{frame}
+
+\begin{frame}{Das XOR-Problem}
+	\centering
+	\includegraphics[width=0.8\textwidth]{../Ausarbeitung/figures/XOR_Solution.png}
+	\begin{enumerate}
+		\item <1-> Basis-Lernalgorithmus wird mit ursprünglichen Daten trainiert; $h_2$
+		      wird ausgewählt mit einem Fehler von 0.25 und einem Gewicht von ca. 0.55.
+		\item <2-> Nach Erhöhung des Gewichts von $x_1$ wird $h_3$
+		      mit einem Fehler von 0.25 und einem Gewicht von 0.80 ausgewählt.
+		\item <3-> Gewicht von $x_3$ steigt, $h_5$ wird mit einem Gewicht von
+		      1.10 ausgewählt, was zu einem nichtlinearen Klassifikator ohne Fehler führt.
+	\end{enumerate}
+\end{frame}
+
+\section{Praktische Anwendung}
+\begin{frame}{Praktische Anwendung und Beispiele}
+	\begin{itemize}
+		\item \textbf{Bilderkennung und Computervision:} Gesichtserkennung~\cite{viola2001rapid}
+		\item \textbf{Textklassifikation und Natural Language Processing}: Erkennung von Spam-Mail~\cite{panwar2022detection}
+		\item \textbf{Medizinische Diagnostik:} Risiko/Erkennung von Krankheiten baserend auf Patientendaten~\cite{hatwell2020ada}
+		\item \textbf{Finanzwesen:} Vorhersage von Aktienkursbewegungen~\cite{zhang2016stock}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Praktische Anwendung und Beispiele}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\textwidth]{../Ausarbeitung/figures/CV_Example.png}
+		\caption{Anwendung von AdaBoost bei Computer Vision:
+			Das erste Merkmal von AdaBoost misst den Intensitätsunterschied
+			zwischen der Augenregion und den oberen Wangen,
+			wobei die Augen oft dunkler sind. Das zweite Merkmal vergleicht die
+			Intensität der Augen mit der Nasenbrücke.\cite{viola2001rapid}}
+	\end{figure}
+\end{frame}
+\section{Vor- und Nachteile}
+\begin{frame}{Vor- und Nachteile von AdaBoost}
+	\begin{itemize}
+		\item <1-> AdaBoost ist benutzerfreundlich, flexibel, und identifiziert
+		      automatisch wichtige Features, wobei es weniger zu Overfitting neigt.
+		\item <2-> Es ist anfällig für verrauschte Daten und Außreißer, kann bei großen Datensätzen
+		      zeitintensiv sein und ist hauptsächlich für binäre Klassifikation ausgelegt.
+	\end{itemize}
+\end{frame}
+
+\section{Erweiterungen und Variationen}
+\begin{frame}{Erweiterungen und Variationen von AdaBoost}
+	\begin{itemize}
+		\item <1-> ursprünglich für binäre Klassifikation entwickelt,
+		      durch verschiedene Erweiterungen für diverse Problemstellungen adaptiert.
+		\item <2-> Variationen wie \glqq AdaBoost.M1\grqq~ und \glqq SAMME\grqq~
+		      erweitern den Algorithmus für Multiklassen-Probleme.
+		\item <3-> Kosten-sensitives AdaBoost passt Gewichtungen basierend auf Fehlerkosten an.
+		\item <4-> Neben Entscheidungsstümpfen kann AdaBoost mit SVMs oder
+		      Neuronalen Netzen kombiniert werden.
+
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Erweiterungen und Variationen von AdaBoost}
+	\begin{itemize}
+		\item <1-> Robuste AdaBoost-Varianten minimieren die Auswirkung von Ausreißern.
+		\item <2-> Online AdaBoost aktualisiert Modelle mit sequenziellen
+		      Daten ohne Neutrainierung.
+		\item <3-> Einige Varianten integrieren Feature-Auswahl direkt, um
+		      Interpretierbarkeit und Trainingseffizienz zu steigern.
+	\end{itemize}
+\end{frame}
+\section{Literatur und Zusatzmaterial}
+\begin{frame}[allowframebreaks]{Literatur}
+	\bibliographystyle{alpha}
+	\bibliography{../Ausarbeitung/seminar_top10.bib}
+\end{frame}
+\begin{frame}{Zusatzmaterial}
+	\centering
+	\includegraphics[width=0.45\textwidth]{../Code/img/XOR_Code.png}
+	\includegraphics[width=0.45\textwidth]{../Code/img/face_recognition.png}\\
+	Umsetzungen und Beispiele von AdaBoost + diese Präsentation mit Ausarbeitung
+	in \LaTeX auf \textcolor{red}{\emph{\underline{\href{https://github.com/Vinfeno/TTAIDM_AdaBoost}{GitHub}}}}.
+\end{frame}
+
+\begin{frame}{Danke}
+	\resizebox{\linewidth}{!}{Vielen Dank für die Aufmerksamkeit!}
+\end{frame}
+\end{document}
+
+
+

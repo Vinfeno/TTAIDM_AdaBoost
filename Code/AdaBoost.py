@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 # Define the Decision Stump classifier
@@ -72,16 +73,34 @@ class AdaBoost:
             y_pred += clf.alpha * pred
         return np.sign(y_pred)
 
+    def plot(self, X, y):
+        """Visualize the decision boundary after each round."""
+        plot_step = 0.01
+        x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+        y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+        xx, yy = np.meshgrid(
+            np.arange(x_min, x_max, plot_step), np.arange(y_min, y_max, plot_step)
+        )
+
+        Z = self.predict(np.c_[xx.ravel(), yy.ravel()])
+        Z = Z.reshape(xx.shape)
+
+        plt.contourf(xx, yy, Z, alpha=0.3)
+        plt.scatter(X[:, 0], X[:, 1], c=y, marker="o")
+        plt.title("AdaBoost Decision Boundary")
+        plt.xlabel("Feature 1")
+        plt.ylabel("Feature 2")
+        plt.show()
+
 
 # Example usage
 if __name__ == "__main__":
-    X = np.array([[0, 1], [1, 0], [1, 1], [2, 2]])
+    X = np.array([[0, 1], [0, -1], [1, 0], [-1, 0]])
     y = np.array([1, 1, -1, -1])
 
-    print(f"X:\n{X}")
-    print(f"shape of X: {X.shape}")
-    clf = AdaBoost(n_clf=3)
-    clf.fit(X, y)
-    predictions = clf.predict(X)
-    print(f"True labels: {y}")
-    print(f"Predictions: {predictions}")
+    clf = AdaBoost(n_clf=5)
+    for i in range(1, clf.n_clf + 1):
+        clf.n_clf = i
+        clf.fit(X, y)
+        print(f"Round {i}")
+        clf.plot(X, y)

@@ -1,0 +1,63 @@
+\documentclass[11pt,a4paper,oneside]{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb, amsthm} 
+\usepackage{graphicx, tikz} 
+\usepackage{hyperref} 
+\usepackage{tabularx}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\begin{document}
+
+\title{Ausarbeitung zum Thema AdaBoost}
+\subtitle{Bachelor-Seminar "`Top 10 Algorithms in Data Mining"'}
+
+\author{Marius Graf}
+\date{\today}
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+    \noindent\textbf{Abstract:}
+    Diese Arbeit untersucht den AdaBoost-Algorithmus im Kontext des maschinellen Lernens.
+    Sie beleuchtet seine Entstehung, Vorteile und Herausforderungen. Anhand von Anwendungsbeispielen aus
+    verschiedenen Bereichen wird die Anwendbarkeit von AdaBoost dargestellt. Die Relevanz von AdaBoost in der
+    aktuellen Datenwissenschaft wird abschließend erörtert.
+\end{abstract}
+\newpage
+
+\section{Einleitung}
+\input{module/Einleitung.tex}
+
+\section{Grundlagen des Boosting}
+\input{module/boosting/Boosting.tex}
+
+\section{Der AdaBoost Algorithmus}
+\input{module/AdaBoost/AdaBoost.tex}
+
+\section{Praktische Anwendung und Beispiele}
+\input{module/AnwendungUndBeispiele.tex}
+
+\section{Vor- und Nachteile von AdaBoost}
+\input{module/VorUndNachteile.tex}
+
+\section{Erweiterungen und Variationen von AdaBoost}
+\input{module/ErweiterungenUndVariationen.tex}
+
+
+\section{Schlusswort}
+\input{module/Fazit.tex}
+
+\bibliographystyle{alpha}
+\bibliography{seminar_top10.bib}
+
+\end{document}

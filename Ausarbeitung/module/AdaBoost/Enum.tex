@@ -1,0 +1,13 @@
+\begin{enumerate}
+    \item Der erste Schritt besteht darin, den Basis-Lernalgorithmus auf den ursprünglichen Daten aufzurufen.
+          $h_2, h_3, h_5$ und $h_8$ haben alle eine Klassifikationsfehler von 0.25. Angenommen, $h_2$ wird als erster
+          Basis-Lerner ausgewählt. Ein Datensatz $(x_1)$ wird falsch klassifiziert, daher beträgt der Fehler 0.25.
+          Das Gewicht von $h_2$ beträgt ungefähr $\varepsilon_t\approx 0.55$. Abbildung \ref*{fig:XOR-Solution}(b) zeigt die Klassifikation und die Gewichtungen.
+    \item Das Gewicht von $x_1$ wird erhöht und der Basis-Lernalgorithmus erneut aufgerufen. Diesmal haben $h_3, h_5$ und $h_8$
+          gleiche Fehler. Angenommen, $h_3$ wird ausgewählt, dessen Gewicht 0.80 beträgt. Abbildung \ref*{fig:XOR-Solution}(c)
+          zeigt die kombinierte Klassifikation von $h_2$ und $h_3$.
+    \item Das Gewicht von $x_3$ wird erhöht. Diesmal haben nur $h_5$ und $h_8$ die niedrigsten Fehler. Angenommen, $h_5$ wird
+          ausgewählt, dessen Gewicht 1.10 beträgt. Abbildung \ref*{fig:XOR-Solution}(d) zeigt die kombinierte Klassifikation
+          von $h_2, h_3$ und $h_8$. Durch die Kombination der unvollkommenen linearen Klassifikatoren hat AdaBoost einen nichtlinearen Klassifikator mit
+          null Fehler erzeugt.
+\end{enumerate}

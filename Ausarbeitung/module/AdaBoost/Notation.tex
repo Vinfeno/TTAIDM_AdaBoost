@@ -1,0 +1,17 @@
+\begin{itemize}
+    \item Sei $\mathcal{X}$ die Menge der Features mit $\left|\mathcal{X}\right| = n$
+          (Anzahl der Features) und $\mathcal{Y}$ die Menge der Labels, die gelernt werden sollen.
+          Dabei ist $\mathcal{Y}=\{-1, +1\}$ bei binärer Klassifikation. Ein Trainingdatensatz $D$ besteht aus $m$ Einträgen,
+          welche Features mit Labels verbinden:
+          $$
+              D=\{(\boldsymbol{x}_i, y_i)\},~i=1, \dots, m
+          $$
+    \item Nach dem Training auf $D$ wird ein Lernalgorithmus $\mathcal{L}$ eine Hypothese bzw. einen Klassifizierer
+          $h$ zurück geben, der von $\mathcal{X}$ nach $\mathcal{Y}$ abbildet.
+          \begin{align*}
+              h:\mathcal{X} \rightarrow \mathcal{Y}, h(\boldsymbol{x}) = y
+          \end{align*}
+    \item $T$ ist die Anzahl der gewünschten Trainingsiterationen.
+    \item Bei jeder Iteration $t=1, \dots,T$ wird ein Datensatz $\mathcal{D}_t$ von $D$ abgeleitet. Dabei wird
+          jeder Datenpunkt mit einem Gewicht $\mathcal{D}_t(i)$ mit $i=1, \dots, m$ erweitert.
+\end{itemize}

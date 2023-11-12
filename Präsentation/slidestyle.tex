@@ -1,0 +1,350 @@
+\usetheme{HPC}
+
+% Set language options
+\if\englishlanguage0
+	\PassOptionsToPackage{german,germankw,onelanguage}{algorithm2e}
+	\PassOptionsToPackage{ngerman}{babel}
+\else
+	\PassOptionsToPackage{english}{babel}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Include useful packages 
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{framed}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{bbding}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{times}
+\usepackage{ifthen}
+\usepackage{pgfplots}
+\usepackage{alltt}
+\usepackage{transparent}
+\usepackage{colortbl}
+\usepackage{textcomp}
+\usepackage{multirow}
+\usepackage{babel}
+
+
+% increase itemize spacing
+\let\realitemize\itemize
+\let\endrealitemize\enditemize
+\renewenvironment{itemize}{%
+	\realitemize\setlength{\parskip}{0pt}\setlength{\itemsep}{.24cm}}
+{%
+	\endrealitemize%
+}
+
+% Switch between transparency and invisibility for covered things
+\if\coveredtransparent1
+	\setbeamercovered{transparent}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TikZ initializations, in particular for overlays and externalization
+
+\pgfplotsset{compat=1.12}
+
+\tikzstyle{every picture}+=[remember picture]
+\tikzstyle{na} = [baseline=-.5ex, xshift = -0.15cm]
+\tikzstyle{na2} = [baseline=-.5ex, xshift = -0.35cm]
+
+\tikzset{
+	ncbar angle/.initial=90,
+	ncbar/.style={
+			to path=(\tikztostart)
+			-- ($(\tikztostart)!#1!\pgfkeysvalueof{/tikz/ncbar angle}:(\tikztotarget)$)
+			-- ($(\tikztotarget)!($(\tikztostart)!#1!\pgfkeysvalueof{/tikz/ncbar angle}:(\tikztotarget)$)!\pgfkeysvalueof{/tikz/ncbar angle}:(\tikztostart)$)
+			-- (\tikztotarget)
+		},
+	ncbar/.default=0.5cm,
+}
+
+\tikzset{square left brace/.style={ncbar=0.5cm}}
+\tikzset{square right brace/.style={ncbar=-0.5cm}}
+
+\tikzset{round left paren/.style={ncbar=0.5cm,out=120,in=-120}}
+\tikzset{round right paren/.style={ncbar=0.5cm,out=60,in=-60}}
+\usetikzlibrary{positioning,matrix,arrows,arrows.meta,backgrounds,shapes}
+\usetikzlibrary{backgrounds,mindmap,decorations.pathreplacing,external,calc}
+\tikzexternalize[prefix=tikzfigures/] % path for saving precompiled tikz pictures
+
+% Command for easily connecting tikz anchors on slide by arrow
+\newcommand{\connectbyarrow}[3]{%
+	\begin{tikzpicture}[overlay]
+		\path[->,UniGruen,very thick,shorten >= .25cm, shorten <= .25cm] (#1) edge [#3] (#2);
+	\end{tikzpicture}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some layout stuff
+
+% set custom text margins
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+% Turn off navigation symbols if desired
+\if\printnavigationsymbols0
+	\beamertemplatenavigationsymbolsempty
+\fi
+
+% footline design
+\setbeamertemplate{footline}{
+	\begin{beamercolorbox}[sep=2pt]{footline}
+		\hspace{1em}\insertshortauthor\\ \textit{\insertshorttitle{} \ifthenelse{\printcoursename=1}{(\coursenamefootline)}{}} \hfill
+		\ifthenelse{\printpagenumbers=1}{\insertframenumber/\inserttotalframenumber}{} \hspace{1pt}
+	\end{beamercolorbox}
+}
+
+% custom commands for removing some slides from miniframes (needed for table of contents
+% at beginning of section/subsection, see below)
+\makeatletter
+\let\beamer@writeslidentry@miniframeson=\beamer@writeslidentry
+\def\beamer@writeslidentry@miniframesoff{%
+	\expandafter\beamer@ifempty\expandafter{\beamer@framestartpage}{}%
+	{%
+		\clearpage\beamer@notesactions%
+	}
+}
+\newcommand*{\miniframeson}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframeson}
+\newcommand*{\miniframesoff}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframesoff}
+\beamer@compresstrue
+\makeatother
+
+% Print table of contents at beginning of each section, with the current section highlighted in green and everything else shaded
+\if\printtocatbeginofsection1
+	\AtBeginSection[]
+	{
+		% Remove frame number from footline on outline slides
+		\let\rememberpagenumberswitch\printpagenumbers
+		\def\printpagenumbers{0}
+		\miniframesoff
+		\begin{frame}[t,noframenumbering]{\ifthenelse{\englishlanguage=1}{Outline}{Inhalt}}
+			\setbeamercolor{section in toc}{fg=UniGruen,bg=}
+			\setbeamercolor{section in toc shaded}{fg=Gray,bg=}
+			\setbeamercolor{subsection in toc shaded}{fg=Gray,bg=}
+			\setbeamercolor{subsection in toc}{fg=Gray,bg=}
+			\tableofcontents[currentsection]
+		\end{frame}
+		\miniframeson
+		\let\printpagenumbers\rememberpagenumberswitch
+	}
+\fi
+
+% Print table of contents at beginning of each subsection, with the current section and subsection highlighted in green and everything else shaded
+\if\printtocatbeginofsubsection1
+	\AtBeginSubsection[]
+	{
+		% Remove frame number from footline on outline slides
+		\let\rememberpagenumberswitch\printpagenumbers
+		\def\printpagenumbers{0}
+		\miniframesoff
+		\begin{frame}[t,noframenumbering]{\ifthenelse{\englishlanguage=1}{Outline}{Inhalt}}
+			\setbeamercolor{section in toc}{fg=UniGruen,bg=}
+			\setbeamercolor{section in toc shaded}{fg=Gray,bg=}
+			\setbeamercolor{subsection in toc shaded}{fg=Gray,bg=}
+			\setbeamercolor{subsection in toc}{fg=UniGruen,bg=}
+			\tableofcontents[currentsection,currentsubsection]
+		\end{frame}
+		\miniframeson
+		\let\printpagenumbers\rememberpagenumberswitch
+	}
+\fi
+
+% Include small "Uni-Loewe" icon in top right corner of each slide
+\if\printlion1
+	\addtobeamertemplate{frametitle}{}{%
+		\tikzexternaldisable%
+		\begin{tikzpicture}[remember picture,overlay]%
+			\node[anchor=north east,yshift=1.5pt, xshift = 0.2pt] at (current page.north east) {\includegraphics[height=.6cm]{figures/loewe-weiss.pdf}};%
+		\end{tikzpicture}%
+		\tikzexternalenable%
+
+		\vspace{-.5cm}
+	}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page
+
+% Do not count title page in page numbering
+\let\otp\titlepage
+\renewcommand{\titlepage}{\otp\addtocounter{framenumber}{-1}}
+
+% Custom title page layout
+\defbeamertemplate*{title page}{customized}
+{
+	\thispagestyle{empty}
+
+	%\vspace{-.5cm}
+	\if\printbanner1
+		\hpcbanner
+	\fi
+
+	\vspace*{.25cm}
+	\begin{center}
+		\if\printcoursename1
+			\Large\textbf{\coursename}\par
+		\fi
+		\bigskip
+		\hfill
+		\begin{beamercolorbox}[rounded=true, center, wd=.8\paperwidth]{mycolor}
+			\Large\inserttitle
+		\end{beamercolorbox}
+		\hfill\hfill
+
+		\bigskip
+		\bigskip
+
+		\if\printauthor1
+			\normalsize\textbf{\insertauthor}\par
+		\fi
+
+		\vspace{.15cm}
+		\bigskip
+		\if\printinstitute1
+			\small\insertinstitute\par
+		\fi
+		\bigskip
+		\if\printdate1
+			\normalsize\insertdate\par
+		\fi
+		\ifx\longtitle\undefined
+		\else
+			\if\longtitle1
+				\vspace{-1cm}
+			\else
+
+			\fi
+		\fi
+	\end{center}
+}
+
+% Generate HPC banner for title page, similar to our exercise sheet headers etc.
+\newcommand{\hpcbanner}{
+	\makebox[\textwidth][c]{
+		\begin{tikzpicture}
+			[textnode/.style={white,font={\bf \sffamily \small},inner sep=0pt}]
+			\fill [UniGruen] (0,0) rectangle (\paperwidth,2cm);
+			\node [inner sep=0pt] (loewe) at (1,1) {\includegraphics[width=1.75cm]{figures/loewe-weiss.pdf}};
+			\node [textnode,anchor=west] (T) at (2.25,1) {\ifthenelse{\englishlanguage=1}{Scientific Computing \& High Performance Computing}{Wissenschaftliches Rechnen und Hochleistungsrechnen}};
+			\node [textnode,above=0.6cm of T.west,anchor=west] {Bergische Universität Wuppertal};
+			\node [textnode,below=0.6cm of T.west,anchor=west] {\lecturername};
+		\end{tikzpicture}
+	}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Auxiliary stuff
+
+% Remove algorithm numbering
+\renewcommand{\thealgocf}{}
+
+% Command for including small book icon that can be used for referencing literature, lecture notes or similar
+\newcommand{\smallbook}{\includegraphics[width = .028\textwidth]{figures/bookicon.pdf}}
+
+% Command that generates a framed box containing a book icon and text
+\newcommand{\inbook}[1]{{\setlength{\topsep}{0pt}
+			\begin{framed}
+				\begin{minipage}{.08\textwidth}
+					\includegraphics[width = .99\textwidth]{figures/bookicon.pdf}
+				\end{minipage}
+				\begin{minipage}{.9\textwidth}
+					#1
+				\end{minipage}
+			\end{framed}}}
+
+% Slight change of bibliography layout to look better on slides
+\let\OLDthebibliography\thebibliography
+\renewcommand\thebibliography[1]{
+	\OLDthebibliography{#1}
+	\setlength{\parskip}{0pt}
+	\setlength{\itemsep}{0pt plus 0.3ex}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some commands that I frequently need
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+% Define your logos here to be used on the title page
+\newcommand{\BUWLogo}{\includegraphics[height=32pt]{figures/loewe-weiss.pdf}}
+\newcommand{\upk}{^{(k)}}
+\newcommand{\upm}{^{(m)}}
+\newcommand{\upinv}{^{-1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\Rn}{\mathbb{R}^n}
+\newcommand{\Rk}{\mathbb{R}^k}
+\newcommand{\Cn}{\mathbb{C}^n}
+\newcommand{\Rnn}{\mathbb{R}^{n \times n}}
+\newcommand{\Cnn}{\mathbb{C}^{n \times n}}
+\newcommand{\slitplane}{\mathbb{C} \setminus \mathbb{R}_0^-}
+\newcommand{\va}{{\mathbf a}}
+\newcommand{\vb}{{\mathbf b}}
+\newcommand{\vc}{{\mathbf c}}
+\newcommand{\vd}{{\mathbf d}}
+\newcommand{\vdhat}{{\mathbf {\hat d}}}
+\newcommand{\ve}{{\mathbf e}}
+\newcommand{\vehat}{{\mathbf {\hat e}}}
+\newcommand{\vf}{{\mathbf f}}
+\newcommand{\vftilde}{{\mathbf {\widetilde f}}}
+\newcommand{\vg}{{\mathbf g}}
+\newcommand{\vh}{{\mathbf h}}
+\newcommand{\vhhat}{{\mathbf {\hat h}}}
+\newcommand{\vk}{{\mathbf k}}
+\newcommand{\vp}{{\mathbf p}}
+\newcommand{\vq}{{\mathbf q}}
+\newcommand{\vr}{{\mathbf r}}
+\newcommand{\vs}{{\mathbf s}}
+\newcommand{\vt}{{\mathbf t}}
+\newcommand{\vu}{{\mathbf u}}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\vw}{{\mathbf w}}
+\newcommand{\vx}{{\mathbf x}}
+\newcommand{\vy}{{\mathbf y}}
+\newcommand{\vz}{{\mathbf z}}
+\newcommand{\vnull}{\boldsymbol{0}}
+\newcommand{\vone}{\boldsymbol{1}}
+\newcommand{\spK}{{\cal K}}
+\newcommand{\spEK}{{\cal E}}
+\newcommand{\spL}{{\cal L}}
+\newcommand{\spP}{{\cal P}}
+\newcommand{\tol}{\texttt{tol}{}}
+\newcommand{\specialcell}[2][l]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\renewcommand{\d}{\,\mathrm{d}}
+\newcommand{\dmu}{\d\mu(t)}
+\newcommand{\dalpha}{\d\alpha(z)}
+\DeclareMathOperator{\Pe}{Pe}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\lmin}{{\lambda_{\min}}}
+\newcommand{\lmax}{{\lambda_{\max}}}
+\newcommand{\AHA}{A^H\!A}
+\newcommand{\tve}{\widetilde{{\mathbf e}}}
+\newcommand{\tvf}{\widetilde{{\mathbf f}}}
+\newcommand{\tvx}{\widetilde{{\mathbf x}}}
+\newcommand{\tvr}{\widetilde{{\mathbf r}}}
+\newcommand{\rhoinvA}{\rho}
+\newcommand{\deltaA}{\delta}
+\newcommand{\deltainvA}{\delta'}
+\newcommand{\Lmax}{\Lambda_{\max}}
+\newcommand{\nmin}{\nu_{\min}}
+\newcommand{\nmax}{\nu_{\max}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\comment}[1]{{\small\color{gray!50}// #1}}
+\DeclareMathAlphabet{\mathbf}{OT1}{cmr}{bx}{n}
+\def\Hat{\mkern-3mu\text{\textasciicircum}}

@@ -1,0 +1,16 @@
+Boosting ist eine Ensemble-Technik im Machine Learning, die mehrere sog. \emph{\glqq schwache Lerner\grqq} kombiniert,
+um ein präzises Gesamtmodell zu erstellen. Als \emph{schwacher Lerner} wird ein Modell bezeichnet, das nur einen geringen
+Zusammenhang in den Daten lernen kann und dessen Vorhersagen daher nur etwas besser als zufälliges Raten sind.
+In jeder Iteration wird ein solches Modell trainiert, das falsche
+Vorhersagen der vorherigen Modelle korrigiert, indem es die Gewichtung der Trainingsdaten anpasst.
+Das Ziel ist es, den systematischen Fehler (\emph{Bias}) des Modells zu reduzieren und die Genauigkeit
+schrittweise zu verbessern, indem es sich auf schwierig zu klassifizierende Datenpunkte konzentriert.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{"./figures/Boosting_Graph"}
+    \caption{Flussdiagramm zur Veranschaulichung des Boosting-Konzepts}
+\end{figure}
+
+\subsection*{Beispiel:}
+\input{module/boosting/BoostingBeispiel.tex}

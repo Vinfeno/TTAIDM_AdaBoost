@@ -1,0 +1,36 @@
+Stellen wir uns vor, wir möchten ein Modell entwickeln, das den Preis von
+Häusern basierend auf verschiedenen Merkmalen wie Größe, Lage, Anzahl der
+Zimmer und Baujahr vorhersagt.
+
+\begin{table}[h]
+    \centering
+    \input{module/boosting/BoostingTabelle1.tex}
+    \caption{Beispielhafte Daten für Hauspreise basierend auf Größe und Lage}
+\end{table}
+
+\begin{itemize}
+    \item Wir entscheiden uns zunächst für ein sehr einfaches Modell (schwacher Lerner),
+          das den Preis nur anhand der Größe des Hauses vorhersagt.
+          Dieses Modell geht davon aus, dass alle anderen Merkmale keinen
+          Einfluss auf den Preis haben.
+    \item In Wirklichkeit variieren die Hauspreise jedoch nicht nur aufgrund
+          ihrer Größe, sondern auch aufgrund anderer Faktoren. Ein kleines Haus in einer
+          begehrten Lage könnte teurer sein als ein großes Haus in einer weniger beliebten
+    \item Da unser Modell nur die Größe berücksichtigt und alle anderen Faktoren ignoriert,
+          wird es systematisch den Preis von Häusern in begehrten Lagen unterschätzen und den Preis
+          von Häusern in weniger beliebten Gegenden überschätzen. Dieser systematische Fehler in den
+          Vorhersagen ist der \textbf{Bias}.
+\end{itemize}
+
+In mehreren Iterationen wird beim Boosting nun das Gewicht der Datenpunkte so angepasst, dass sich das
+zweite Modell auf genau die Datenpunke fokussiert, welche zuvor falsch bzw. besonders schlecht vorhergesagt wurden.
+Somit ist hier eine deutlich größere Anpassung der Vorhersage zu erkennen als bei den Datenpunkten, die zuvor
+relativ gut vorhergasagt wurden.
+
+\begin{table}
+    \centering
+    \input{module/boosting/BoostingTabelle2.tex}
+    \caption{Beispielhafte Daten für Hauspreise und wie Boosting den Bias in mehreren Iterationen reduziert}
+\end{table}
+Zuletzt werden alle schwachen Lerner zu einem \emph{starken Lerner} als Ensemble zusammengefügt, wobei die Vorhersagen
+der einzelnen Modelle entsprechend ihrer individuellen Präzision gewichtet werden.
