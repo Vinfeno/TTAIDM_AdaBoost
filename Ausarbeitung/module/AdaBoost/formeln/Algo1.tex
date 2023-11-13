@@ -9,11 +9,11 @@
         \tcp{Trainiere einen schwachen Lerner unter Berücksichtigung der Gewichtung \(\mathcal{D}_t(i)\)}
         \(h_t \leftarrow \mathcal{L}(D, \mathcal{D}_t)\) \;
         \tcp{Berechne den gewichteten Fehler}
-        \(\epsilon_t = \sum_{i=1}^{n} \mathcal{D}_t(i) I(y_i \neq h_t(x_i))\)\;
+        \(\varepsilon_t = \sum_{i=1}^{n} \mathcal{D}_t(i) I(y_i \neq h_t(x_i))\)\;
         Wähle den Lerner mit dem geringsten Fehler als \(h_t\)\;
-        \If{\(\epsilon_t > 0.5\)}{\textbf{break}}\;
+        \If{\(\varepsilon_t > 0.5\)}{\textbf{break}}\;
         \tcp{Berechne den Lernerkoeffizienten}
-        \(\alpha_t = \frac{1}{2} \ln \left( \frac{1 - \epsilon_t}{\epsilon_t} \right)\)\;
+        \(\alpha_t = \frac{1}{2} \ln \left( \frac{1 - \varepsilon_t}{\varepsilon_t} \right)\)\;
         % End of Part 1, save last line number if needed
         \tcp{Algorithmus wird fortgesetzt...}
     }

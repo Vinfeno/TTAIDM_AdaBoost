@@ -9,9 +9,8 @@ mit dem geringsten Fehler wird in jeder Iteration ausgewählt. Ein Fehler von $1
 Vorhersagen falsch und $0$ bedeutet, dass alle korrekt sind.
 Bei einem Fehler von $0.5$ sind entsprechend die Hälfte der Vorhersagen richtig. \\\\
 Wenn $\varepsilon_t > 0.5$, sind die Vorhersagen also schlechter
-als zufälliges Raten und der Algorithmus (in der ursprünglichen Version) wird gestoppt,
+als zufälliges Raten und der Algorithmus wird gestoppt,
 da weitere Lerner das Modell nicht verbessern würden.\\\\
-In der Praxis werden aber meist mehrere Modelle pro Iteration trainiert, wobei nicht bei einem Fehler von $\varepsilon_t>0.5$
-gestoppt wird. Schwache Lerner werden für jedes Feature trainiert und beide Polaritäten betrachtet (damit also insgesamt
+In der Praxis werden aber meist mehrere Modelle pro Iteration trainiert. Schwache Lerner werden für jedes Feature trainiert und beide Polaritäten betrachtet (damit also insgesamt
 $2n$ Modelle). Wenn ein Modell z.B. nur zu 40\% korrekt vorhersagt, wird durch Umkehrung der Polarität eine 60\%ige Genauigkeit erreicht. So gibt es für
-jede Iteration stets eine Auswahl von Modellen, die als $h_t$ gewählt werden können.
+jede Iteration stets eine Auswahl von Modellen, für die $\varepsilon_t\leq0.5$ gilt und diese somit als $h_t$ gewählt werden können.
