@@ -1,17 +1,19 @@
 \begin{algorithm}[H]
     \DontPrintSemicolon
-    \KwData{Trainingsdatensatz \(D\), wobei \(x_i \in \mathcal{X}\) und \(y_i \in \{-1, 1\}\); Anzahl der Iterationen \(T\).}
+    \LinesNotNumbered
+    \KwData{Trainingsdatensatz \(D\), Anzahl der Iterationen \(T\).}
     \KwResult{Finale Klassifikationsfunktion: \(H(x) = \text{sign}\left(\sum_{t=1}^{T} \alpha_t h_t(x)\right)\).}
     \BlankLine
     \tcp{Initialisiere Gewichte}
-    \(\mathcal{D}_1(i)=\frac{1}{n}\)\;
+    \(w^{(1)}_i=\frac{1}{m}\)\;
     \For{\(t = 1\) \KwTo \(T\)}{
-        \tcp{Trainiere einen schwachen Lerner unter Berücksichtigung der Gewichtung \(\mathcal{D}_t(i)\)}
-        \(h_t \leftarrow \mathcal{L}(D, \mathcal{D}_t)\) \;
-        \tcp{Berechne den gewichteten Fehler}
-        \(\varepsilon_t = \sum_{i=1}^{n} \mathcal{D}_t(i) I(y_i \neq h_t(x_i))\)\;
-        Wähle den Lerner mit dem geringsten Fehler als \(h_t\)\;
-        \If{\(\varepsilon_t > 0.5\)}{\textbf{break}}\;
+        \tcp{Trainiere schwache Lerner}
+        \(h \leftarrow \mathcal{L}(D, w^{(t)}_i)\) \;
+        \tcp{Berechne Fehler}
+        \For{$j=1$ \KwTo $|h|$ }{
+            \(\varepsilon_j = \sum_{i=1}^{m} w^{(t)}_i\cdot I(y_i \neq h_j(x_i))\)\;
+        }
+        Wähle Lerner $h_j$ mit minimalem Fehler $\varepsilon_j$ als \(h_t\)\;
         \tcp{Berechne den Lernerkoeffizienten}
         \(\alpha_t = \frac{1}{2} \ln \left( \frac{1 - \varepsilon_t}{\varepsilon_t} \right)\)\;
         % End of Part 1, save last line number if needed

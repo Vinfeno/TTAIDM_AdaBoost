@@ -1,25 +1,22 @@
-% Second part of the algorithm
 \begin{algorithm}[H]
+    \LinesNotNumbered
     \DontPrintSemicolon
-    \SetKwInput{KwData}{Daten} % Just setting KwInput for algorithm continuation
-    \SetKwInput{KwResult}{Ergebnis} % Consistency for KwResult if needed in continuation
+    \SetKwInput{KwData}{Daten}
+    \SetKwInput{KwResult}{Ergebnis}
     \BlankLine
     \tcp{Fortsetzung des Algorithmus}
     \tcp{Weiterhin innerhalb des For-Loops}
-    % Since we're continuing, we won't redefine KwData and KwResult, but it's possible if needed.
-    % Continue from the breakpoint but all still in the for loop...
     \tcp{Aktualisiere die Gewichte für die nächsten Iterationen}
     \eIf{\(y_i = h_t(x_i)\)}{
-        \(\mathcal{D}_{t+1}(i) \leftarrow \mathcal{D}_{t}(i) \times e^{-\alpha_t}\)\;
+        \(w^{(t+1)}_i \leftarrow w^{(t)}_i \cdot e^{-\alpha_t}\)\;
     }{
-        \(\mathcal{D}_{t+1}(i) \leftarrow \mathcal{D}_{t}(i) \times e^{\alpha_t}\)\;
+        \(w^{(t+1)}_i \leftarrow w^{(t)}_i \cdot e^{\alpha_t}\)\;
     }
     \tcp{Normalisiere Gewichte}
-    \(Z_t \leftarrow \sum_{j=1}^n\mathcal{D}_{t+1}(j)\)\;
-    \For{\(i = 1\) \KwTo \(n\)}{
-        \(\mathcal{D}_{t+1}(i) \leftarrow \frac{\mathcal{D}_{t+1}(i)}{Z_t}\)\;
+    \(Z_t \leftarrow \sum_{j=1}^mw^{(t+1)}_i\)\;
+    \For{\(i = 1\) \KwTo \(m\)}{
+        \(w^{(t+1)}_i \leftarrow \frac{w^{(t+1)}_i}{Z_t}\)\;
     }
-    % If there were further steps, they would go here...
     \KwOut{\(H(x)=\text{sign}\left(\sum_{t=1}^T\alpha_th_t(x)\right)\)}
     \tcp{Ende des Algorithmus}
 \end{algorithm}

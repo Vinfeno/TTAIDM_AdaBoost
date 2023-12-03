@@ -3,6 +3,7 @@ Sources/
 Vorlage/
 beamer_template/
 Sources/
+Tests/
 *.log
 *.bbl
 *.aux

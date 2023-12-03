@@ -1,0 +1,14 @@
+\begin{tikzpicture}[node distance=2cm]
+    \node (start) [startstop] {Start};
+    \node (train) [prozess, below of=start] {Trainiere einen (weiteren) schwachen Lerner};
+    \node (bewerte) [prozess, below right of=train] {Bewerte Vorhersagen};
+    \node (gewichte) [prozess, below of=train] {Gewichte Datenpunkte neu};
+    \node (kombiniere) [prozess, left of=bewerte] {Kombiniere zustarkem Lerner};
+    % \node (ende) [startstop, below of=bewerte] {Ende};
+
+    \draw [arrow] (start) -- (train);
+    \draw [arrow] (train) -- (bewerte);
+    \draw [arrow] (bewerte) -- (gewichte);
+    \draw [arrow] (bewerte) -- (kombiniere);
+    % \draw [arrow] (bewerte) -- (ende);
+\end{tikzpicture}
