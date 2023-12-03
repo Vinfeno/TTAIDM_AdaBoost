@@ -201,7 +201,7 @@
 		\item <2-> $\mathcal{Y}:$ Menge der \textbf{Labels} $(\mathcal{Y}=\{-1,+1\}$ bei binärer Klassifikation)
 		\item <3-> $D:$ \textbf{Trainingdatensatz} der Form $D=\{(\boldsymbol{x}_i,y_i)\},~i=1,...,m$
 		\item <4-> Modell wird auf $D$ durch \textbf{Lernalgorithmus} $\mathcal{L}$ (meistens \emph{Decision Stump}) trainiert und gilt
-		\item <5-> eine \textbf{Hypothese} $h:\mathcal{X}\rightarrow\mathcal{Y},~h(\boldsymbol{x})=y$ zurück
+		\item <5-> eine \textbf{Hypothese} $h:X\rightarrow\mathcal{Y},~h(\boldsymbol{x})=y$ zurück
 		\item <6-> Anzahl der \textbf{Trainingsiterationen} $T$
 		\item <7-> bei jeder Iteration wird $D$ um \textbf{Gewichte} $$w^{(t)}_i$$ mit $i=1,\dots,m$ und $t=1,\dots,T$ erweitert
 	\end{itemize}
@@ -304,7 +304,7 @@
 	Der Algorithmus gibt ein Gesamtmodell zurück, welches die Klassifizierung des Datenpunktes durch die gewichtete
 	Summe aller schwachen Lerner darstellt:
 	\begin{align*}
-		H    & :      \mathcal{X} \rightarrow \{-1, +1\}       \\
+		H    & :      X \rightarrow \{-1, +1\}                 \\
 		H(x) & =  \sign\left(\sum_{t=1}^T\alpha_th_t(x)\right)
 	\end{align*}
 \end{frame}
@@ -382,8 +382,9 @@
 	\begin{itemize}
 		\item <1-> \textbf{Robuste} Varianten minimieren die Auswirkung von Ausreißern.
 		\item <2-> \textbf{Online} AdaBoost aktualisiert Modelle ohne Neutrainierung.
-		\item <3-> \textbf{Feature-Auswahl direkt}, um
-		      Interpretierbarkeit und Trainingseffizienz zu steigern.
+		\item <3-> \textbf{Direkte Feature Auswahl:} Wählt während des Trainings aus, welche Features wichtig sind
+		      und betrachtet nur diese $\leadsto$ \textbf{schnelleres Training}
+		\item <4-> Variationen, welche die \textbf{Interpretierbarkeit und Erklärbarkeit} verbessert
 	\end{itemize}
 \end{frame}
 \section{Literatur und Zusatzmaterial}
