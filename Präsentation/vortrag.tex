@@ -201,7 +201,7 @@
 		\item <2-> $\mathcal{Y}:$ Menge der \textbf{Labels} $(\mathcal{Y}=\{-1,+1\}$ bei binärer Klassifikation)
 		\item <3-> $D:$ \textbf{Trainingdatensatz} der Form $D=\{(\boldsymbol{x}_i,y_i)\},~i=1,...,m$
 		\item <4-> Modell wird auf $D$ durch \textbf{Lernalgorithmus} $\mathcal{L}$ (meistens \emph{Decision Stump}) trainiert und gibt
-		\item <5-> eine \textbf{Hypothese} $h:X\rightarrow\mathcal{Y},~h(\boldsymbol{x})=y$ zurück
+		\item <5-> $n$ \textbf{Hypothesen} $(h_j)_{j\in\mathcal{I}},~h_j:X\rightarrow\mathcal{Y},~h_j(\boldsymbol{x})=y$ mit $\mathcal{I}=\{1,...,n\}$ zurück
 		\item <6-> Anzahl der \textbf{Trainingsiterationen} $T$
 		\item <7-> bei jeder Iteration wird $D$ um \textbf{Gewichte} $$w^{(t)}_i$$ mit $i=1,\dots,m$ und $t=1,\dots,T$ erweitert
 	\end{itemize}
@@ -209,7 +209,7 @@
 
 \begin{frame}[t]{Initialisierung der Gewichte}
 	\begin{itemize}
-		\item <1-> Zu beginn sind die Gewichte gleich verteilt \input{../Ausarbeitung/module/AdaBoost/formeln/Init1.tex}
+		\item <1-> Zu Beginn sind die Gewichte gleich verteilt \input{../Ausarbeitung/module/AdaBoost/formeln/Init1.tex}
 		\item <2-> Die Summe der Gewichte ist stets 1 \input{../Ausarbeitung/module/AdaBoost/formeln/Init2.tex}
 	\end{itemize}
 \end{frame}
@@ -218,14 +218,14 @@
 	\begin{itemize}
 		\item <1-> \textbf{Trainiere} pro Iteration $n$ \textbf{schwache Lerner} (für jedes Feature zwei, je mit umgekehrter Polarität)
 		      $$
-			      h = \mathcal{L}(D, w^{(t)})
+			      (h_j)_{j\in\mathcal{I}} = \mathcal{L}(D, w^{(t)})
 		      $$
 		      mit $w^{(t)}$ als Gewichte der $t$-ten Iteration
 		\item <2-> Ziel: gewichteten \textbf{Fehler minimieren}
 		      $$
 			      \varepsilon_j = \sum_{i=1}^m w_i^{(t)}\cdot I\left(y_i \neq h_j\left(\boldsymbol{x}_i\right)\right),~j=1,\dots,n
 		      $$
-		      Wähle Lerner $h_j\in h$ mit \textbf{geringstem Fehler} $\varepsilon_j$ (meiste korrekt klassifizierte Datenpunkte)
+		      Wähle Lerner $h_j$ aus der Folge mit \textbf{geringstem Fehler} $\varepsilon_j$ (meiste korrekt klassifizierte Datenpunkte) als $h_t$
 		\item <3-> Dabei bezeichntet $I$ die \textbf{Indikatorfunktion}
 		      $$
 			      I(A)=\left\{\begin{array}{l l}
@@ -270,7 +270,7 @@
 			       & \Leftrightarrow e^{2\alpha_t} = \frac{\sum_{y_i=h_t(x_i)}w_i^{(t)}}{\sum_{y_i\neq h_t(x_i)}w_i^{(t)}}                       \\
 			       & \Leftrightarrow \alpha_t = \frac{1}{2}\ln\left(\frac{\sum_{y_i=h_t(x_i)}w_i^{(t)}}{\sum_{y_i\neq h_t(x_i)}w_i^{(t)}}\right)
 		      \end{align*}
-		\item<2-> Da $\sum_{y_i\neq h_t(x_i)}w_i=\varepsilon_t$ und $\sum_{y_i=h_t(x_i)}w_i=1-\varepsilon_t$
+		\item<2-> Da $\sum_{y_i\neq h_t(x_i)}w_i^{(t)}=\varepsilon_t$ und $\sum_{y_i=h_t(x_i)}w_i^{(t)}=1-\varepsilon_t$
 		      \begin{align*}
 			      \implies \alpha_t =\frac{1}{2}\ln\left(\frac{1-\varepsilon_t}{\varepsilon_t}\right)
 		      \end{align*}
@@ -335,7 +335,7 @@
 		\includegraphics[width=0.7\textwidth]{../Ausarbeitung/figures/spam.png}
 	\end{figure}
 \end{frame}
-\begin{frame}{Praktische Anwendung und Beispiele}{\textbf{Medizinische Diagnostik:} Risiko/Erkennung von Krankheiten baserend auf Patientendaten}
+\begin{frame}{Praktische Anwendung und Beispiele}{\textbf{Medizinische Diagnostik:} Risiko/Erkennung von Krankheiten basierend auf Patientendaten}
 	\begin{figure}
 		\centering
 		\includegraphics[width=\textwidth]{../Ausarbeitung/figures/ada-whips.png}
