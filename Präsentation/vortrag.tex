@@ -113,7 +113,7 @@
 		\item <1-> Boosting kombiniert \textbf{schwache Lerner} zu einem \textbf{starken Gesamtmodell}
 		\item <2-> \textbf{Schwacher Lerner:} Modell, das nur \textbf{geringfügig besser} ist als \textbf{zufälliges Raten}
 		\item <3-> \textbf{Passe Gewichtung} der Trainingsdaten iterativ \textbf{an}, damit neue Modelle die \textbf{Fehler der Vorgänger korrigieren}
-		\item <4-> $\leadsto$ verrignerter \textbf{Bias, bessere Vorhersagegenauigkeit} für schwer klassifizierbare Beispiele
+		\item <4-> $\leadsto$ verringerter \textbf{Bias, bessere Vorhersagegenauigkeit} für schwer klassifizierbare Beispiele
 	\end{itemize}
 \end{frame}
 
@@ -152,8 +152,8 @@
 \begin{frame}[t]{Beispiel}{Vorhersage von Hauspreisen}
 	\begin{itemize}
 		\item \textbf{Boosting:} Passe iterativ Gewicht der Datenpunkte so an, dass nächstes Modell verstärkt die schlecht vorhergesagten Fälle beachtet
+		\item [] \emph{P = Vorhersage, W = Gewichtung}
 	\end{itemize}
-	\emph{P = Vorhersage, W = Gewichtung}
 	\begin{table}
 		\centering
 		\resizebox{0.95\textwidth}{!}{%
@@ -197,10 +197,10 @@
 
 \begin{frame}[t]{Notation}
 	\begin{itemize}
-		\item <1-> $\mathcal{X}:$ Menge der \textbf{Features}, $|\mathcal{X}|=n$
+		\item <1-> $\mathcal{X}:$ Menge der \textbf{Features}
 		\item <2-> $\mathcal{Y}:$ Menge der \textbf{Labels} $(\mathcal{Y}=\{-1,+1\}$ bei binärer Klassifikation)
 		\item <3-> $D:$ \textbf{Trainingdatensatz} der Form $D=\{(\boldsymbol{x}_i,y_i)\},~i=1,...,m$
-		\item <4-> Modell wird auf $D$ durch \textbf{Lernalgorithmus} $\mathcal{L}$ (meistens \emph{Decision Stump}) trainiert und gilt
+		\item <4-> Modell wird auf $D$ durch \textbf{Lernalgorithmus} $\mathcal{L}$ (meistens \emph{Decision Stump}) trainiert und gibt
 		\item <5-> eine \textbf{Hypothese} $h:X\rightarrow\mathcal{Y},~h(\boldsymbol{x})=y$ zurück
 		\item <6-> Anzahl der \textbf{Trainingsiterationen} $T$
 		\item <7-> bei jeder Iteration wird $D$ um \textbf{Gewichte} $$w^{(t)}_i$$ mit $i=1,\dots,m$ und $t=1,\dots,T$ erweitert
@@ -216,14 +216,14 @@
 
 \begin{frame}[t]{Training der schwachen Lerner}
 	\begin{itemize}
-		\item <1-> \textbf{Trainiere} pro Iteration mehrere \textbf{schwache Lerner} (für jedes Feature zwei, je mit umgekehrter Polarität)
+		\item <1-> \textbf{Trainiere} pro Iteration $n$ \textbf{schwache Lerner} (für jedes Feature zwei, je mit umgekehrter Polarität)
 		      $$
 			      h = \mathcal{L}(D, w^{(t)})
 		      $$
 		      mit $w^{(t)}$ als Gewichte der $t$-ten Iteration
 		\item <2-> Ziel: gewichteten \textbf{Fehler minimieren}
 		      $$
-			      \varepsilon_j = \sum_{i=1}^n w_i^{(t)}\cdot I\left(y_i \neq h_j\left(\boldsymbol{x}_i\right)\right),~j=1,\dots,|h|
+			      \varepsilon_j = \sum_{i=1}^m w_i^{(t)}\cdot I\left(y_i \neq h_j\left(\boldsymbol{x}_i\right)\right),~j=1,\dots,n
 		      $$
 		      Wähle Lerner $h_j\in h$ mit \textbf{geringstem Fehler} $\varepsilon_j$ (meiste korrekt klassifizierte Datenpunkte)
 		\item <3-> Dabei bezeichntet $I$ die \textbf{Indikatorfunktion}
@@ -255,10 +255,10 @@
 			      y_i \neq h_t(x_i) & \implies y_ih_t(x_i)  = -1                                    \\
 			                        & \leadsto \text{ Beitrag zum Verlust: } w_i^{(t)}e^{\alpha_t}
 		      \end{align*}
-		\item <2-> Minimieren von $L(h_t)$:\begin{align*}
+		\item <3-> Minimieren von $L(h_t)$:\begin{align*}
 			      L(h_t) = \sum_{y_i=h_t(x_i)}w_i^{(t)}e^{-\alpha_t} + \sum_{y_i\neq h_t(x_i)} w_i^{(t)}e^{\alpha_t} \\
 		      \end{align*}
-		\item<3->[] \begin{align*}
+		\item<4->[] \begin{align*}
 			      \frac{dL(h_t)}{d\alpha_t} = -e^{-\alpha_t}\sum_{y_i=h_t(x_i)}w_i^{(t)} + e^{\alpha_t}\sum_{y_i\neq h_t(x_i)}w_i^{(t)} = 0
 		      \end{align*}
 	\end{itemize}
