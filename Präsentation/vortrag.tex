@@ -242,7 +242,7 @@
 			      L(h_t) = \sum_{i=1}^{m} w_i^{(t)}e^{-y_ih_t(x_i)}
 		      \end{align*}
 		\item <2-> Herleitung: führe Lernkoeffizienten $\alpha_t$ ein \begin{align*}
-			      L(h_t)=\sum_{i=1}^{m}w_ie^{-\alpha_ty_ih_t(x_i)}
+			      L(h_t)=\sum_{i=1}^{m}w_i^{(t)}e^{-\alpha_ty_ih_t(x_i)}
 		      \end{align*}
 	\end{itemize}
 \end{frame}
@@ -255,10 +255,10 @@
 			      y_i \neq h_t(x_i) & \implies y_ih_t(x_i)  = -1                                    \\
 			                        & \leadsto \text{ Beitrag zum Verlust: } w_i^{(t)}e^{\alpha_t}
 		      \end{align*}
-		\item <3-> Minimieren von $L(h_t)$:\begin{align*}
+		\item <2-> Minimieren von $L(h_t)$:\begin{align*}
 			      L(h_t) = \sum_{y_i=h_t(x_i)}w_i^{(t)}e^{-\alpha_t} + \sum_{y_i\neq h_t(x_i)} w_i^{(t)}e^{\alpha_t} \\
 		      \end{align*}
-		\item<4->[] \begin{align*}
+		\item<3->[] \begin{align*}
 			      \frac{dL(h_t)}{d\alpha_t} = -e^{-\alpha_t}\sum_{y_i=h_t(x_i)}w_i^{(t)} + e^{\alpha_t}\sum_{y_i\neq h_t(x_i)}w_i^{(t)} = 0
 		      \end{align*}
 	\end{itemize}
@@ -267,10 +267,11 @@
 \begin{frame}[t]{Berechnung des Lernkoeffizienten}
 	\begin{itemize}
 		\item <1-> [] \begin{align*}
-			       & \Leftrightarrow e^{2\alpha_t} = \frac{\sum_{y_i=h_t(x_i)}w_i}{\sum_{y_i\neq h_t(x_i)}w_i}                       \\
-			       & \Leftrightarrow \alpha_t = \frac{1}{2}\ln\left(\frac{\sum_{y_i=h_t(x_i)}w_i}{\sum_{y_i\neq h_t(x_i)}w_i}\right)
+			       & \Leftrightarrow e^{2\alpha_t} = \frac{\sum_{y_i=h_t(x_i)}w_i^{(t)}}{\sum_{y_i\neq h_t(x_i)}w_i^{(t)}}                       \\
+			       & \Leftrightarrow \alpha_t = \frac{1}{2}\ln\left(\frac{\sum_{y_i=h_t(x_i)}w_i^{(t)}}{\sum_{y_i\neq h_t(x_i)}w_i^{(t)}}\right)
 		      \end{align*}
-		\item<2-> Da $\sum_{y_i=h_t(x_i)}w_i=1-\varepsilon_t$ und $\sum_{y_i\neq h_t(x_i)}w_i=\varepsilon_t$\begin{align*}
+		\item<2-> Da $\sum_{y_i\neq h_t(x_i)}w_i=\varepsilon_t$ und $\sum_{y_i=h_t(x_i)}w_i=1-\varepsilon_t$
+		      \begin{align*}
 			      \implies \alpha_t =\frac{1}{2}\ln\left(\frac{1-\varepsilon_t}{\varepsilon_t}\right)
 		      \end{align*}
 	\end{itemize}
