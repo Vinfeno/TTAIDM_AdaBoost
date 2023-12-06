@@ -169,9 +169,9 @@
 \begin{frame}[t]{Einführung}
 	\begin{itemize}
 		\item <1-> \glqq Adaptive Boosting\grqq
-		\item <2-> entwickelt in den 1990ern von Freund und Schapire, einflussreiches Verfahren für \textbf{binäre Klassifikation}
-		\item <3-> Boosting-Methode, \textbf{Gewichtung} falsch klassifizierter Datenpunkte \textbf{exponentiell} erhöht
-		\item <4-> spezielle \textbf{adaptive} Fehlerkorrektur
+		\item <2-> Entwickelt in den 1990ern von Freund und Schapire, einflussreiches Verfahren für \textbf{binäre Klassifikation}
+		\item <3-> Berechnung eines \textbf{Lernkoeffizienten} zur Gewichtung eines Lerners im Ensemble
+		\item <4-> Nutzung des Lernkoeffizienten zur \textbf{exponentiellen Neugewichtung} falsch klassifizierter Datenpunkte
 	\end{itemize}
 \end{frame}
 
@@ -225,7 +225,7 @@
 		      $$
 			      \varepsilon_j = \sum_{i=1}^m w_i^{(t)}\cdot I\left(y_i \neq h_j\left(\boldsymbol{x}_i\right)\right),~j=1,\dots,n
 		      $$
-		      Wähle Lerner $h_j$ aus der Folge mit \textbf{geringstem Fehler} $\varepsilon_j$ (meiste korrekt klassifizierte Datenpunkte) als $h_t$
+		      Wähle Lerner $h_j$ aus der Folge mit \textbf{geringstem Fehler} $\varepsilon_j$ als $h_t$
 		\item <3-> Dabei bezeichntet $I$ die \textbf{Indikatorfunktion}
 		      $$
 			      I(A)=\left\{\begin{array}{l l}

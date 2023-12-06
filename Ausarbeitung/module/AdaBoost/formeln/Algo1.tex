@@ -8,7 +8,7 @@
     \(w^{(1)}_i=\frac{1}{m}\)\;
     \For{\(t = 1\) \KwTo \(T\)}{
         \tcp{Trainiere schwache Lerner}
-        \(h \leftarrow \mathcal{L}(D, w^{(t)}_i)\) \;
+        \((h_{j})_j\in\mathcal{I} \leftarrow \mathcal{L}(D, w^{(t)}_i)\) \;
         \tcp{Berechne Fehler}
         \For{$j=1$ \KwTo $n$ }{
             \(\varepsilon_j = \sum_{i=1}^{m} w^{(t)}_i\cdot I(y_i \neq h_j(x_i))\)\;
