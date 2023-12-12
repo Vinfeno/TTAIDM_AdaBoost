@@ -1,16 +1,5 @@
 \input{module/AdaBoost/formeln/Training1.tex}
-(Hinweis: Abhängig vom konkreten Lernalgorithmus wird ggf. zusätzlich zum gewichteten Datensatz $\mathcal{D}_t$
-auch der gesamte Datensatz $D$ benötigt. Daher werden formal beide übegeben.)\\
 \input{module/AdaBoost/formeln/Training2.tex}
-$I$ ist die Indikatorfunktion, die $1$ zurückgibt, wenn $y_i\neq h_t(\boldsymbol{x_i})$ erfüllt ist, und
-sonst $0$. Das bedeutet, sie gibt $1$ für jeden falsch vorhergesagten Datenpunkt zurück. $\varepsilon_t$
-stellt die gewichtete Summe aller falschen Vorhersagen des $t$-ten Modells dar. Das Modell
-mit dem geringsten Fehler wird in jeder Iteration ausgewählt. Ein Fehler von $1$ zeigt, dass alle
-Vorhersagen falsch und $0$ bedeutet, dass alle korrekt sind.
-Bei einem Fehler von $0.5$ sind entsprechend die Hälfte der Vorhersagen richtig. \\\\
-Wenn $\varepsilon_t > 0.5$, sind die Vorhersagen also schlechter
-als zufälliges Raten und der Algorithmus wird gestoppt,
-da weitere Lerner das Modell nicht verbessern würden.\\\\
-In der Praxis werden aber meist mehrere Modelle pro Iteration trainiert. Schwache Lerner werden für jedes Feature trainiert und beide Polaritäten betrachtet (damit also insgesamt
-$2n$ Modelle). Wenn ein Modell z.B. nur zu 40\% korrekt vorhersagt, wird durch Umkehrung der Polarität eine 60\%ige Genauigkeit erreicht. So gibt es für
-jede Iteration stets eine Auswahl von Modellen, für die $\varepsilon_t\leq0.5$ gilt und diese somit als $h_t$ gewählt werden können.
+$I$ bezeichnet die Indikatorfunktion, die $1$ zurückgibt, wenn $y_i\neq h_j(\boldsymbol{x_i})$ erfüllt ist, und
+sonst $0$.
+Das Modell mit dem geringsten Fehler $\varepsilon_j$ wird in der Iteration als $h_t$ mit Fehler $\varepsilon_t$ ausgewählt.

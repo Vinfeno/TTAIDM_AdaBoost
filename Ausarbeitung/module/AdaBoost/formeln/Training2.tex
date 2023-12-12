@@ -1,4 +1,5 @@
-Das Ziel ist es, den gewichteten Fehler zu minimieren:
+Ziel ist es, den besten Lerner in der Iteration auszuwählen und diesen dem Ensemble hinzuzufügen. Dazu werden
+die Gewichte der falsch vorhergesagten Datenpunkte summiert:
 $$
-    \varepsilon_t = \sum_{i=1}^n w_i\cdot I\left(y_i \neq h_t\left(\boldsymbol{x}_i\right)\right)
+    \varepsilon_j = \sum_{i=1}^m w^{(t)}_i\cdot I\left(y_i \neq h_j\left(\boldsymbol{x}_i\right)\right)
 $$

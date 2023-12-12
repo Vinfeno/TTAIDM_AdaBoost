@@ -1,17 +1,18 @@
 \begin{itemize}
-    \item Sei $\mathcal{X}$ die Menge der Features mit $\left|\mathcal{X}\right| = n$
-          (Anzahl der Features) und $\mathcal{Y}$ die Menge der Labels, die gelernt werden sollen.
-          Dabei ist $\mathcal{Y}=\{-1, +1\}$ bei binärer Klassifikation. Ein Trainingdatensatz $D$ besteht aus $m$ Einträgen,
+    \item Sei $\mathcal{X}$ die Menge der \textbf{Features}.
+          $\mathcal{Y}$ die Menge der \textbf{Labels}, die gelernt werden sollen.
+          Dabei ist $\mathcal{Y}=\{-1, +1\}$ bei binärer Klassifikation. Ein \textbf{Trainingdatensatz} $D$ besteht aus $m$ Einträgen,
           welche Features mit Labels verbinden:
           $$
               D=\{(\boldsymbol{x}_i, y_i)\},~i=1, \dots, m
           $$
-    \item Nach dem Training auf $D$ wird ein Lernalgorithmus $\mathcal{L}$ eine Hypothese bzw. einen Klassifizierer
-          $h$ zurück geben, der von $\mathcal{X}$ nach $\mathcal{Y}$ abbildet.
+    \item Nach dem Training auf $D$ gibt ein \textbf{Lernalgorithmus} (meistens \emph{Decision Stump}) $\mathcal{L}$ eine \textbf{Hypothese} bzw. einen Klassifizierer
+          $h$ zurück, der von $X$ nach $\mathcal{Y}$ abbildet. In der Regel wrid sogar eine Folge von Hypothesen $(h_j)_{j\in\mathcal{I}}$ mit $\mathcal{I}=\{1,..,n\}$ zurückgegeben.
           \begin{align*}
-              h:\mathcal{X} \rightarrow \mathcal{Y}, h(\boldsymbol{x}) = y
+              h_j:X \rightarrow \mathcal{Y},~h_j(\boldsymbol{x}) = y
           \end{align*}
-    \item $T$ ist die Anzahl der gewünschten Trainingsiterationen.
-    \item Bei jeder Iteration $t=1, \dots,T$ wird ein Datensatz $\mathcal{D}_t$ von $D$ abgeleitet. Dabei wird
-          jeder Datenpunkt mit einem Gewicht $\mathcal{D}_t(i)$ mit $i=1, \dots, m$ erweitert.
+    \item $T$ ist die Anzahl der gewünschten \textbf{Trainingsiterationen}.
+    \item Bei jeder Iteration $t=1, \dots,T$ wird der Datensatz um \textbf{Gewichte} $$
+              w_i^{(t)},~i=1,..,m
+          $$ erweitert.
 \end{itemize}

@@ -1,4 +1,6 @@
 \begin{align*}
-    \mathcal{D}_{t+1}(i) = & \mathcal{D}_{t}(i) \times e^{-\alpha_t} & \text{ für korrekt klassifizierte Datenpunke} \\
-    \mathcal{D}_{t+1}(i) = & \mathcal{D}_{t}(i) \times e^{\alpha_t}  & \text{ für falsch klassifizierte Datenpunke}
+    \begin{array}{l l l}
+        w^{(t+1)}_i & = w^{(t)}_i \cdot e^{-\alpha_t} & \text{für korrekt klassifizierte Datenpunke} \\
+        w^{(t+1)}_i & = w^{(t)}_i \cdot e^{\alpha_t}  & \text{für falsch klassifizierte Datenpunke}
+    \end{array}
 \end{align*}

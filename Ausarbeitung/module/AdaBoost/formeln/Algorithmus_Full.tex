@@ -1,34 +1,35 @@
 \begin{algorithm}[H]
     \DontPrintSemicolon
-    \KwData{Trainingsdatensatz \(D\), wobei \(x_i \in \mathcal{X}\) und \(y_i \in \{-1, 1\}\); Anzahl der Iterationen \(T\).}
+    \LinesNotNumbered
+    \KwData{Trainingsdatensatz \(D\), Anzahl der Iterationen \(T\).}
     \KwResult{Finale Klassifikationsfunktion: \(H(x) = \text{sign}\left(\sum_{t=1}^{T} \alpha_t h_t(x)\right)\).}
     \BlankLine
     \tcp{Initialisiere Gewichte}
-    \(\mathcal{D}_1(i)=\frac{1}{n}\)\;
+    \(w^{(1)}_i=\frac{1}{m}\)\;
     \For{\(t = 1\) \KwTo \(T\)}{
-        \tcp{Trainiere einen schwachen Lerner unter Berücksichtigung der Gewichtung \(\mathcal{D}_t(i)\)}
-        \(h_t \leftarrow \mathcal{L}(D, \mathcal{D}_t)\) \;
-        \tcp{Berechne den gewichteten Fehler}
-        \(\varepsilon_t = \sum_{i=1}^{n} \mathcal{D}_t(i) I(y_i \neq h_t(x_i))\)\;
-        Wähle den Lerner mit dem geringsten Fehler als \(h_t\)\;
-        \If{\(\varepsilon_t > 0.5\)}{\textbf{break}}\;
-        \tcp{Berechne den Lernerkoeffizienten}
-        \(\alpha_t = \frac{1}{2} \ln \left( \frac{1 - \varepsilon_t}{\varepsilon_t} \right)\)\;
-        \tcp{Aktualisiere die Gewichte}
-        \For{\(i = 1\) \KwTo \(n\)}{
-            \eIf{\(y_i = h_t(x_i)\)}{
-                \(\mathcal{D}_{t+1}(i) \leftarrow \mathcal{D}_{t}(i) \times e^{-\alpha_t}\)\;
-            }{
-                \(\mathcal{D}_{t+1}(i) \leftarrow \mathcal{D}_{t}(i) \times e^{\alpha_t}\)\;
-            }
-        }\;
-        \tcp{Normalisiere Gewichte}
-        \(Z_t \leftarrow \sum_{j=1}^n\mathcal{D}_{t+1}(j)\)\;
-        \For{\(i = 1\) \KwTo \(n\)}{
-            \(\mathcal{D}_{t+1}(i) \leftarrow \frac{\mathcal{D}_{t+1}(i)}{Z_t}\)\;
-        }
+    \tcp{Trainiere schwache Lerner}
+    \((h_{j})_{j\in\mathcal{I}} \leftarrow \mathcal{L}(D, w^{(t)}_i)\) \;
+    \tcp{Berechne Fehler}
+    \For{$j=1$ \KwTo $n$ }{
+        \(\varepsilon_j = \sum_{i=1}^{m} w^{(t)}_i\cdot I(y_i \neq h_j(x_i))\)\;
+    }
+    Wähle Lerner $h_j$ mit minimalem Fehler $\varepsilon_j$ als \(h_t\) mit Fehler $\varepsilon_t$\;
+    \tcp{Berechne den Lernerkoeffizienten}
+    \(\alpha_t = \frac{1}{2} \ln \left( \frac{1 - \varepsilon_t}{\varepsilon_t} \right)\)\;
+    \tcp{Aktualisiere die Gewichte für die nächsten Iterationen}
+    \eIf{\(y_i = h_t(x_i)\)}{
+        \(w^{(t+1)}_i \leftarrow w^{(t)}_i \cdot e^{-\alpha_t}\)\;
+    }{
+        \(w^{(t+1)}_i \leftarrow w^{(t)}_i \cdot e^{\alpha_t}\)\;
+    }
+    \tcp{Normalisiere Gewichte}
+    \(Z_t \leftarrow \sum_{j=1}^mw^{(t+1)}_i\)\;
+    \For{\(i = 1\) \KwTo \(m\)}{
+        \(w^{(t+1)}_i \leftarrow \frac{w^{(t+1)}_i}{Z_t}\)\;
+    }
     }
     \KwOut{\(H(x)=\text{sign}\left(\sum_{t=1}^T\alpha_th_t(x)\right)\)}
+    \tcp{Ende des Algorithmus}
 \end{algorithm}
 
 

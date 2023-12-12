@@ -1,4 +1,7 @@
-Trainiere für $t=1,\dots,T$ Iterationen mehrere schwache Lerner unter berücksichtigung der aktuellen Gewichtung.
+Trainiere in jeder Iteration $t$ eine Folge von schwachen Lernern unter Berücksichtigung der aktuellen Gewichtung.
 $$
-    h = \mathcal{L}(D, w_t)
+    (h_j)_{j\in\mathcal{I}} = \mathcal{L}(D, w^{(t)}_i)
 $$
+Dabei wird in der Regel für jedes Feature je ein Lerner für beide Polaritäten trainiert. Wenn also ein Lerner z.B. nur zu 40\% korrekt
+klassifiziert, gibt es stets einen passenden Lerner, der exakt gegenteilige Vorhersagen macht und somit eine
+Präzision von 60\% besitzt. \\[10pt]

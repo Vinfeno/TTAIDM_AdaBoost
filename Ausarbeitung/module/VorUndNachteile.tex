@@ -1,4 +1,9 @@
-AdaBoost ist einfach zu implementieren, vielseitig und benötigt oft keine Anpassung des Basislerners.
-Er ist weniger anfällig für Overfitting und kann wichtige Features automatisch identifizieren.\\\\
-Nachteile sind seine Empfindlichkeit gegenüber verrauschten Daten und Außreißern, der potenzielle Zeitaufwand bei großen
-Datensätzen und seine Abhängigkeit vom Basislerner sowie seine Ausrichtung auf binäre Klassifikation.
+AdaBoost zeichnet sich unter anderem dadurch aus, dass der Algorithms benutzerfreundlich und flexibel ist, wodurch er leicht an
+spezifische Probleme angepasst werden kann. Ein weiterer Vorteil ist, dass AdaBoost automatisch wichtige Features identifiziert und diese
+entsprechend im Ensemble gewichtet. Letztlich neigt AdaBoost zudem weniger zum Overfitting, da nur schwache Lerner genutzt werden, deren
+Kapazität zu gering ist, um die Daten \glqq auswendig\grqq~zu lernen.\\\\
+Jedoch ist AdaBoost anfällig für Ausreißer und verrauschte Daten, weil sich die adaptive Gewichtsanpassung mit jeder Iteration komulativ auf falsch
+klassifizierte Daten fokussiert und so versucht, schwer klassifizierbare Daten zu berücksichtigen. Zudem kann das Training auf großen Datensätzen
+sehr zeitintensiv sein, da oftmals für hunderte bis tausende Iterationen trainiert wird, wobei jedes mal eine große Menge von Lernern trainiert und evaluiert
+werden müssen. Zuletzt ist AdaBoost hauptsächlich für binäre Klassifikation ausgelegt und somit nicht für Regression einsetzbar und
+nur durch Erweiterungen für Multiklassen-Probleme genutzt werden kann.
